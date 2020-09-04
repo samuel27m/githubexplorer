@@ -1,5 +1,6 @@
 import React, { useState, useEffect, FormEvent } from 'react';
 import { FiChevronRight } from 'react-icons/fi';
+import { Link } from 'react-router-dom';
 
 import api from '../../services/api';
 import logoImg from '../../assets/logo.svg';
@@ -15,12 +16,12 @@ interface Repository {
 }
 
 const Dashboard: React.FC = () => {
-    const LOCAL_STORAGE_KEY = '@GithubExplorer:repositories';
+    const localStorageKey = '@GithubExplorer:repositories';
 
     const [newRepo, setNewRepo] = useState('');
     const [inputError, setInputError] = useState('');
     const [repositories, setRepositories] = useState<Repository[]>(() => {
-        const storedRepositories = localStorage.getItem(LOCAL_STORAGE_KEY);
+        const storedRepositories = localStorage.getItem(localStorageKey);
 
         if (storedRepositories) {
             return JSON.parse(storedRepositories);
@@ -30,7 +31,7 @@ const Dashboard: React.FC = () => {
     });
 
     useEffect(() => {
-        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(repositories));
+        localStorage.setItem(localStorageKey, JSON.stringify(repositories));
     }, [repositories]);
 
     async function handleAddRepository(event: FormEvent): Promise<void> {
@@ -72,7 +73,10 @@ const Dashboard: React.FC = () => {
 
             <Repositories>
                 {repositories.map(repository => (
-                    <a key={repository.full_name} href="test">
+                    <Link
+                        key={repository.full_name}
+                        to={`/repositories/${repository.full_name}`}
+                    >
                         <img
                             src={repository.owner.avatar_url}
                             alt={repository.owner.login}
@@ -82,7 +86,7 @@ const Dashboard: React.FC = () => {
                             <p>{repository.description}</p>
                         </div>
                         <FiChevronRight size={20} />
-                    </a>
+                    </Link>
                 ))}
             </Repositories>
         </>
