@@ -55,6 +55,31 @@ export const Form = styled.form<FormProps>`
             background: ${shade(0.2, '#04D361')};
         }
     }
+
+    @keyframes shake {
+        0% {
+            -webkit-transform: translate(15px);
+        }
+        20% {
+            -webkit-transform: translate(-15px);
+        }
+        40% {
+            -webkit-transform: translate(8px);
+        }
+        60% {
+            -webkit-transform: translate(-8px);
+        }
+        80% {
+            -webkit-transform: translate(4px);
+        }
+        100% {
+            -webkit-transform: translate(0px);
+        }
+    }
+
+    &.shake {
+        animation: shake 0.4s 1 linear;
+    }
 `;
 
 export const Repositories = styled.div`

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, FormEvent } from 'react';
+import React, { useState, useEffect, useRef, FormEvent } from 'react';
 import { FiChevronRight } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 
@@ -34,6 +34,19 @@ const Dashboard: React.FC = () => {
         localStorage.setItem(localStorageKey, JSON.stringify(repositories));
     }, [repositories]);
 
+    const isFirstRun = useRef(true);
+    useEffect(() => {
+        if (isFirstRun.current) {
+            isFirstRun.current = false;
+            return;
+        }
+
+        document.getElementById('form')?.classList.add('shake');
+        setTimeout(() => {
+            document.getElementById('form')?.classList.remove('shake');
+        }, 500);
+    }, [inputError]);
+
     async function handleAddRepository(event: FormEvent): Promise<void> {
         event.preventDefault();
 
@@ -60,7 +73,7 @@ const Dashboard: React.FC = () => {
             <img src={logoImg} alt="Github Explorer" />
             <Title>Explore repositories on Github</Title>
 
-            <Form hasError={!!inputError} onSubmit={handleAddRepository}>
+            <Form id='form' hasError={!!inputError} onSubmit={handleAddRepository}>
                 <input
                     placeholder="Type the repository name"
                     value={newRepo}
