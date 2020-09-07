@@ -41,6 +41,10 @@ const Dashboard: React.FC = () => {
             return;
         }
 
+        if (!inputError) {
+            return;
+        }
+
         document.getElementById('form')?.classList.add('shake');
         setTimeout(() => {
             document.getElementById('form')?.classList.remove('shake');
